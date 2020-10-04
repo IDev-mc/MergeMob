@@ -12,6 +12,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin implements Listener {
 
+	long respawndelay = 15;
+	
 	@Override
 	public void onEnable() {
 		super.onEnable();
@@ -52,7 +54,7 @@ public class Main extends JavaPlugin implements Listener {
 	}
 
 	/*
-	 * If size is "size < 2" moves on to respawnEntity()
+	 * If size is "size < 2" moves on to respawnEntity() after @respawndelay ticks
 	 */
 	@EventHandler
 	public void entityDeathEvent(EntityDeathEvent e) {
@@ -60,7 +62,15 @@ public class Main extends JavaPlugin implements Listener {
 		int size = getEntitySize(entity);
 		if (size < 2)
 			return;
-		respawnEntity(entity, size);
+		
+		Bukkit.getScheduler().runTaskLater(this, new Runnable() {
+			
+			@Override
+			public void run() {
+				respawnEntity(entity, size);
+				
+			}
+		}, respawndelay);
 	}
 
 	/*
