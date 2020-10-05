@@ -47,9 +47,14 @@ public class Main extends JavaPlugin implements Listener {
 		if (!mainEntity.isValid()) return;
 		if (mainEntity.getType() != secondEntity.getType()) return;
 		if (mainEntity.getTicksLived() < 20) return;
-
-		int size = getEntitySize(mainEntity) + getEntitySize(secondEntity);
-		mainEntity.setCustomName(size + "x" + convertTypeToName(mainEntity.getType()));
+		if(!(secondEntity instanceof LivingEntity)) return; 
+		if (((LivingEntity) secondEntity).getNoDamageTicks() != 0) return; 
+		
+		int sizesecondentity = getEntitySize(secondEntity);
+		int sizemainentity = getEntitySize(mainEntity);
+		if(sizesecondentity > sizemainentity) return;
+		
+		mainEntity.setCustomName((sizesecondentity+sizemainentity) + "x" + convertTypeToName(mainEntity.getType()));
 		secondEntity.remove();
 	}
 
