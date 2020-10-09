@@ -1,7 +1,9 @@
 package de.I_Dev.MM;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -47,8 +49,13 @@ public class Main extends JavaPlugin implements Listener {
 		if (!mainEntity.isValid()) return;
 		if (mainEntity.getType() != secondEntity.getType()) return;
 		if (mainEntity.getTicksLived() < 20) return;
-		if(!(secondEntity instanceof LivingEntity)) return; 
-		if (((LivingEntity) secondEntity).getNoDamageTicks() != 0) return; 
+		if (mainEntity instanceof ArmorStand) return;
+		if(!(secondEntity instanceof LivingEntity)) return;
+		if (((LivingEntity) secondEntity).getNoDamageTicks() != 0) return;
+		if(mainEntity.getCustomName() != null && !StringUtils.isNumeric(mainEntity.getCustomName().split("x")[0])) return;
+		if(secondEntity.getCustomName() != null && !StringUtils.isNumeric(secondEntity.getCustomName().split("x")[0])) return;
+		
+		
 		
 		int sizesecondentity = getEntitySize(secondEntity);
 		int sizemainentity = getEntitySize(mainEntity);
